@@ -45,7 +45,7 @@ TIM_HandleTypeDef htim1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+uint8_t rx_data[2];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,6 +63,16 @@ int _write(int file, char *ptr, int len)
 {
   HAL_UART_Transmit(&huart2, (uint8_t *)ptr, len, HAL_MAX_DELAY);
   return len;
+}
+
+/**
+  * @brief  Rx Transfer completed callback.
+  * @param  huart UART handle.
+  * @retval None
+  */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	HAL_UART_Receive_IT(&huart2, rx_data, 2);
 }
 /* USER CODE END 0 */
 
@@ -101,6 +111,8 @@ int main(void)
   htim1.Instance->CCR1 = 17;
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 
+  /* 3. Receive data over USART2 by DMA or interruption */
+  HAL_UART_Receive_IT(&huart2, rx_data, 2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
