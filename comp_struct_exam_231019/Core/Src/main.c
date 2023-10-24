@@ -89,6 +89,9 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
+  /* 1. Control the brightness of an LED using PWM (17%) */
+  htim1.Instance->CCR1 = 17;
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 
   /* USER CODE END 2 */
 
