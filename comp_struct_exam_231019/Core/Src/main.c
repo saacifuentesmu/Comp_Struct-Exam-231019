@@ -72,6 +72,9 @@ int _write(int file, char *ptr, int len)
   */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
+	uint8_t new_pwm = (rx_data[0] - '0') *10 + (rx_data[1] - '0');
+	htim1.Instance->CCR1 = new_pwm;
+
 	HAL_UART_Receive_IT(&huart2, rx_data, 2);
 }
 /* USER CODE END 0 */
